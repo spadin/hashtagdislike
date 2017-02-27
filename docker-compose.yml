@@ -1,0 +1,37 @@
+version: '3'
+services:
+  server:
+    build: .
+    volumes:
+      - .:/var/app
+      - node_modules:/var/app/node_modules
+    environment:
+      - DEBUG=*
+    ports:
+      - 8888:8888
+    command: >
+      yarn start
+  daemon:
+    build: .
+    volumes:
+      - .:/var/app
+      - node_modules:/var/app/node_modules
+    environment:
+      - DEBUG=*
+    command: >
+      yarn run daemon
+  postgres:
+    image: postgres:9.6
+    expose:
+      - 5432
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=postgres
+volumes:
+  node_modules: {}
+  pgdata: {}
