@@ -1,7 +1,5 @@
 FROM node:7.6
 
-RUN npm install -g yarn
-
 ENV APP_HOME /var/app
 RUN mkdir -p $APP_HOME
 WORKDIR $APP_HOME
