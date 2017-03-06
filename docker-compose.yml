@@ -24,6 +24,7 @@ services:
     environment:
       - DEBUG=*
       - HTTPS_PORT=55555
+      - HTTP_PORT=44444
       - POSTGRES_HOST=postgres
       - POSTGRES_PORT=5432
       - POSTGRES_USER=postgres
@@ -31,6 +32,7 @@ services:
       - POSTGRES_DB=postgres
     ports:
       - 55555:55555
+      - 44444:44444
     command: >
       yarn start
   daemon:
@@ -52,8 +54,8 @@ services:
       - postgres
   postgres:
     image: postgres:9.6
-    ports:
-      - 5432:5432
+    expose:
+      - 5432
     volumes:
       - pgdata:/var/lib/postgresql/data
     environment:
