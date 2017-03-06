@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const fs = require('fs');
 const https = require('https');
+const http = require('http');
 const url = require('url');
 const total = require('./lib/total');
 const html = fs.readFileSync('./index.html');
@@ -40,3 +41,11 @@ const options = {
 
 const server = https.createServer(options, handler);
 server.listen(process.env.HTTPS_PORT, '0.0.0.0');
+
+// redirect to https
+http.createServer(function (request, response) {
+  response.writeHead(301, {
+    "Location": `https://${request.headers['host']}${request.url}`
+  });
+  response.end();
+}).listen(process.env.HTTP_PORT, '0.0.0.0');
