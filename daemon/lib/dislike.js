@@ -1,4 +1,4 @@
-const { query } = require('../store');
+const { query } = require('./store');
 
 function dislike(tweetId, userId) {
   return new Promise((resolve, reject) => {

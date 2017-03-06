@@ -37,7 +37,7 @@ function updateCount(node, count) {
 }
 
 async function getDislikeCount(tweetId, fn) {
-  const data = await fetch(`http://localhost:8888/dislikes/${tweetId}`);
+  const data = await fetch(`https://hashtagdislike.com/dislikes/${tweetId}`);
   const json = await data.json();
   return json.total;
 }

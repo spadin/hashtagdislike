@@ -1,0 +1,15 @@
+{
+  "name": "hashtagdislike-store",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "db-migrate": "^0.10.0-beta.20",
+    "db-migrate-pg": "^0.1.11",
+    "dotenv": "^4.0.0",
+    "pg": "^6.1.2"
+  },
+  "scripts": {
+    "db-migrate": "db-migrate"
+  }
+}

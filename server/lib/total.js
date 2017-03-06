@@ -1,4 +1,4 @@
-const { query } = require('../store');
+const { query } = require('./store');
 
 function total(tweetId) {
   return new Promise((resolve, reject) => {

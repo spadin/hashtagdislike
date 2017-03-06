@@ -1,25 +1,55 @@
 version: '3'
 services:
-  server:
-    build: .
+  store:
+    build:
+      context: ./store
+      dockerfile: Dockerfile
     volumes:
-      - .:/var/app
-      - node_modules:/var/app/node_modules
+      - ./store:/var/app
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=postgres
+    depends_on:
+      - postgres
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    volumes:
+      - ./server:/var/app
+      - ./private:/private
     environment:
       - DEBUG=*
+      - HTTPS_PORT=55555
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=postgres
     ports:
-      - 8888:8888
+      - 55555:55555
     command: >
       yarn start
   daemon:
-    build: .
+    build:
+      context: ./daemon
+      dockerfile: Dockerfile
     volumes:
-      - .:/var/app
-      - node_modules:/var/app/node_modules
+      - ./daemon:/var/app
     environment:
       - DEBUG=*
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=postgres
     command: >
-      yarn run daemon
+      yarn start
+    depends_on:
+      - postgres
   postgres:
     image: postgres:9.6
     expose:
@@ -33,5 +63,4 @@ services:
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=postgres
 volumes:
-  node_modules: {}
   pgdata: {}

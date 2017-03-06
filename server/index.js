@@ -1,8 +1,10 @@
 require('dotenv').config();
 
-const http = require('http');
+const fs = require('fs');
+const https = require('https');
 const url = require('url');
-const total = require('./total');
+const total = require('./lib/total');
+const html = fs.readFileSync('./index.html');
 
 async function handler(request, response) {
   const path = url.parse(request.url).pathname;
@@ -24,9 +26,17 @@ async function handler(request, response) {
     }
   }
   else {
-    response.writeHead(404);
-    response.end();
+    response.writeHead(200, {
+      'Content-Type': 'text/html'
+    });
+    response.end(html);
   }
 }
-const server = http.createServer(handler);
-server.listen(process.env.HTTP_PORT, '0.0.0.0');
+
+const options = {
+  key: fs.readFileSync('/private/hashtagdislike.com.key'),
+  cert: fs.readFileSync('/private/hashtagdislike.com.crt'),
+};
+
+const server = https.createServer(options, handler);
+server.listen(process.env.HTTPS_PORT, '0.0.0.0');
